@@ -1,0 +1,42 @@
+server:
+  port: 16000
+
+spring:
+  application:
+    name: consumer
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: "http://eurekaServer18000:18000/eureka/,http://eurekaServer18001:18001/eureka/"
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG·
+        http: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        wait-duration-in-open-state: 5s # 熔断器从打开到半开的等待时间
+        failure-rate-threshold: 50 # 失败率阈值
+        event-consumer-buffer-size: 10 # 事件消费者缓冲区大小
+        automatic-transition-from-open-to-half-open-enabled: true # 是否自动从打开状态转换到半开状态
+        register-health-indicator: true # 是否注册健康指示器
+        permitted-number-of-calls-in-half-open-state: 10 # 半开状态下允许的调用次数
+        record-exceptions:
+          - java.lang.Exception
+    instances:
+        backendA:
+            baseConfig: default
+        backendB:
+            baseConfig: default
+            wait-duration-in-open-state: 3s

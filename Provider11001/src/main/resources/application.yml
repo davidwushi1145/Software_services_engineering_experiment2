@@ -1,0 +1,23 @@
+server:
+  port: 11001
+
+spring:
+  application:
+    name: provider
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+  client:
+    serviceUrl:
+      defaultZone: "http://eurekaServer18000:18000/eureka/,http://eurekaServer18001:18001/eureka/"
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+        http: DEBUG

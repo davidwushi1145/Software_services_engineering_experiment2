@@ -1,0 +1,24 @@
+server:
+  port: 18000
+
+eureka:
+  server:
+    enable-self-preservation: false
+  instance:
+    hostname: "eurekaServer18000"
+  client:
+      registerWithEureka: false
+      fetchRegistry: false
+      serviceUrl:
+        defaultZone: "http://eurekaServer18001:18001/eureka/"
+
+spring:
+  application:
+    name: Eureka
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+        http: DEBUG
